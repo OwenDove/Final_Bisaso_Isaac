@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Air NWKTC Classrooms Admin</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <style>
+        /* Custom CSS for white text fields */
+        /* .form-control {
+            background-color: #fff;
+        } */
+        /* Logo style */
+        .logo {
+            display: block;
+            margin: 20px auto; /* Center the logo */
+            max-width: 150px; /* Set maximum width */
+            max-height: 60px; /* Set maximum height */
+            width: auto;
+            height: auto;
+        }
+        /* Heading style */
+        .heading {
+            text-align: center;
+        }
+        /* Table style */
+        .classroom-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+    
+        .classroom-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            color: #ffffff; /* Font color black */
+        }
+        .classroom-table th {
+            background-color: #f2f2f2;
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            color: #000; /* Font color black */
+        }
+        /* Notification style */
+        .notification {
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .success {
+            background-color: #4CAF50; /* Green */
+            color: white;
+        }
+        .error {
+            background-color: #f44336; /* Red */
+            color: white;
+        }
+        /* Hide the Book Classroom form initially */
+        #book-classroom {
+            display: none;
+        }
+    </style>
+    <!-- End CSS -->
+    <link rel="shortcut icon" href="./assets/images/favicon.png"/>
+</head>
+<body>
+<div class="container">
+    <!-- Logo -->
+    <img src="./assets/images/max.png" alt="Logo" class="logo">
+    <div class="heading">
+        <h1>Air NWKTC Classrooms Admin</h1>
+    </div>
+    <!-- Connect MetaMask button -->
+    <div id="connect-metamask" class="section">
+        <h2>Connect MetaMask</h2>
+        <button id="connectButton" class="btn btn-primary">Connect MetaMask</button>
+        <p id="metamask-error" class="error-message"></p>
+    </div>
+
+    <!-- Admin panel content -->
+    <div id="admin-panel" class="section" style="display: none;">
+        <!-- Navigation menu -->
+        <ul class="nav" id="navigation" style="display: none;">
+            <li class="nav-item">
+                <a class="nav-link" href="#add-classroom">Add Classroom</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#book-classroom">Book Classroom</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#cancel-booking">Cancel Booking</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#delete-classroom">Delete Classroom</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#view-bookings">View Bookings</a> <!-- Added link to view bookings -->
+            </li>
+        </ul>
+        
+        <!-- Add classroom form -->
+        <div id="add-classroom">
+            <h2>Add Classroom</h2>
+            <form id="addClassroomForm">
+                <div class="form-group">
+                    <label for="addClassroomName">Classroom Name:</label>
+                    <input type="text" class="form-control" id="addClassroomName" name="name" required>
+                </div>
+                <!-- New Input Fields -->
+                <div class="form-group">
+                    <label for="addClassroomDate">Date:</label>
+                    <input type="date" class="form-control" id="addClassroomDate" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="addClassroomTime">Time:</label>
+                    <input type="time" class="form-control" id="addClassroomTime" name="time" required>
+                </div>
+                <div class="form-group">
+                    <label for="addClassroomInstructor">Instructor Name:</label>
+                    <input type="text" class="form-control" id="addClassroomInstructor" name="instructor" required>
+                </div>
+                <div class="form-group">
+                    <label for="addClassroomDetails">Class Details:</label>
+                    <textarea class="form-control" id="addClassroomDetails" name="details" required></textarea>
+                </div>
+                <!-- End of New Input Fields -->
+                <button type="submit" class="btn btn-primary">Add Classroom</button>
+            </form>
+            <div id="addClassroomNotification" class="notification" style="display: none;"></div>
+        </div>
+        
+        <!-- Book classroom form -->
+        <div id="book-classroom">
+            <h2>Book Classroom</h2>
+            <form id="bookClassroomForm">
+                <div class="form-group">
+                    <label for="bookClassroomId">Classroom ID:</label>
+                    <input type="text" class="form-control" id="bookClassroomId" name="id" required>
+                </div>
+                <!-- <button type="submit" class="btn btn-primary">Book Classroom</button> -->
+            </form>
+            <!-- <div id="bookClassroomNotification" class="notification" style="display: none;"></div> -->
+        </div>
+        
+        <!-- Cancel booking form -->
+        <div id="cancel-booking">
+            <h2>Cancel Booking</h2>
+            <form id="cancelBookingForm">
+                <div class="form-group">
+                    <label for="cancelBookingId">Booking ID:</label>
+                    <input type="text" class="form-control" id="cancelBookingId" name="id" required>
+                </div>
+                <button type="submit" class="btn btn-danger">Cancel Booking</button>
+            </form>
+            <div id="cancelBookingNotification" class="notification" style="display: none;"></div>
+        </div>
+        
+        <!-- Delete classroom form -->
+        <div id="delete-classroom">
+            <h2>Delete Classroom</h2>
+            <form id="deleteClassroomForm">
+                <div class="form-group">
+                    <label for="deleteClassroomId">Classroom ID:</label>
+                    <input type="text" class="form-control" id="deleteClassroomId" name="id" required>
+                </div>
+                <button type="submit" class="btn btn-danger">Delete Classroom</button>
+            </form>
+            <div id="deleteClassroomNotification" class="notification" style="display: none;"></div>
+        </div>
+
+        <!-- View bookings content -->
+        <div id="view-bookings">
+            <h2>View Bookings</h2>
+            <table class="classroom-table">
+                <thead>
+                    <tr>
+                        <th>Classroom ID</th>
+                        <th>ClassroomName</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Instructor</th>
+                        <th>Class Details</th>
+                        <th>Booked Status</th>
+                    </tr>
+                </thead>
+                <tbody id="bookings-list"></tbody>
+            </table>
+            <div id="viewBookingsNotification" class="notification" style="display: none;"></div>
+        </div>
+        
+<!-- JavaScript -->
+<script src="./assets/js/jquery.min.js"></script>
+<script src="./assets/js/popper.min.js"></script>
+<script src="./assets/js/bootstrap.min.js"></script>
+<!-- Script for handling MetaMask connection -->
+<script src="./assets/js/metamask.js"></script>
+<script>
+   // Function to fetch and display bookings
+function fetchAndDisplayBookings() {
+    fetch('http://localhost:3000/api/classrooms')
+    .then(response => response.json())
+    .then(classrooms => {
+        const bookingsList = document.getElementById('bookings-list');
+        bookingsList.innerHTML = ''; // Clear previous data
+        classrooms.forEach(classroom => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${classroom.id}</td>
+                <td>${classroom.Name}</td>
+                <td>${classroom.Date}</td>
+                <td>${classroom.Time}</td>
+                <td>${classroom.InstructorName}</td>
+                <td>${classroom.classDetails}</td>
+                <td>${classroom.IsBooked ? 'Yes' : 'No'}</td>
+            `;
+            bookingsList.appendChild(row);
+        });
+    })
+    .catch(error => {
+        console.error('Error fetching bookings:', error);
+        alert('Failed to fetch bookings. Please try again later.');
+    });
+}
+
+
+    // Function to display notification
+    function displayNotification(message, type, formId) {
+        const notificationId = formId + 'Notification';
+        const notificationElement = document.getElementById(notificationId);
+        notificationElement.textContent = message;
+        notificationElement.className = 'notification';
+        notificationElement.classList.add(type);
+        notificationElement.style.display = 'block';
+        setTimeout(() => {
+            notificationElement.style.display = 'none';
+        }, 3000); // Hide notification after 3 seconds
+    }
+
+   // Event listener for add classroom form submission
+document.getElementById('addClassroomForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const className = document.getElementById('addClassroomName').value;
+    const date = document.getElementById('addClassroomDate').value;
+    const time = document.getElementById('addClassroomTime').value;
+    const instructorName = document.getElementById('addClassroomInstructor').value;
+    const classDetails = document.getElementById('addClassroomDetails').value;
+    if (!className || !date || !time || !instructorName || !classDetails) {
+        alert('All fields are required');
+        return;
+    }
+    fetch('http://localhost:3000/api/classrooms', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name: className, date: date, time: time, instructorName: instructorName, classDetails: classDetails })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to add classroom');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Classroom added successfully:', data);
+        fetchAndDisplayBookings(); // Refresh bookings after adding a classroom
+        document.getElementById('addClassroomName').value = ''; // Clear input fields
+        document.getElementById('addClassroomDate').value = '';
+        document.getElementById('addClassroomTime').value = '';
+        document.getElementById('addClassroomInstructor').value = '';
+        document.getElementById('addClassroomDetails').value = '';
+        displayNotification('Classroom added successfully', 'success', 'addClassroom');
+    })
+    .catch(error => {
+        console.error('Error adding classroom:', error);
+        alert('Failed to add classroom. Please try again later.');
+    });
+});
+
+
+    // Function to handle booking a classroom
+    document.getElementById('bookClassroomForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const classroomId = document.getElementById('bookClassroomId').value;
+        if (!classroomId) {
+            alert('Classroom ID is required');
+            return;
+        }
+        fetch(`http://localhost:3000/api/classrooms/book/${classroomId}`, {
+            method: 'GET',
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Classroom booked successfully:', data);
+            fetchAndDisplayBookings(); // Refresh bookings after booking a classroom
+            document.getElementById('bookClassroomId').value = ''; // Clear input field
+            displayNotification('Classroom booked successfully', 'success', 'bookClassroom');
+        })
+        .catch(error => {
+            console.error('Error booking classroom:', error);
+            alert('Failed to book classroom. Please try again later.');
+        });
+    });
+
+    // Function to handle canceling a booking
+    document.getElementById('cancelBookingForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const bookingId = document.getElementById('cancelBookingId').value;
+        if (!bookingId) {
+            alert('Booking ID is required');
+            return;
+        }
+        fetch(`http://localhost:3000/api/classrooms/cancel/${bookingId}`, {
+            method: 'POST',
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Booking canceled successfully:', data);
+            fetchAndDisplayBookings(); // Refresh bookings after canceling a booking
+            document.getElementById('cancelBookingId').value = ''; // Clear input field
+            displayNotification('Booking canceled successfully', 'success', 'cancelBooking');
+        })
+        .catch(error => {
+            console.error('Error canceling booking:', error);
+            alert('Failed to cancel booking. Please try again later.');
+        });
+    });
+
+    // Function to handle deleting a classroom
+    document.getElementById('deleteClassroomForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const classroomId = document.getElementById('deleteClassroomId').value;
+        if (!classroomId) {
+            alert('Classroom ID is required');
+            return;
+        }
+        fetch(`http://localhost:3000/api/classrooms/${classroomId}`, {
+            method: 'DELETE',
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Classroom deleted successfully:', data);
+            fetchAndDisplayBookings(); // Refresh bookings after deleting a classroom
+            document.getElementById('deleteClassroomId').value = ''; // Clear input field
+            displayNotification('Classroom deleted successfully', 'success', 'deleteClassroom');
+        })
+        .catch(error => {
+            console.error('Error deleting classroom:', error);
+            alert('Failed to delete classroom. Please try again later.');
+        });
+    });
+
+    // Fetch and display bookings when the page loads
+    fetchAndDisplayBookings();
+</script>
+</body>
+</html>
